@@ -21,9 +21,9 @@ export default function Home() {
       <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Abstract dark gradient / image layer */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=2070&q=80" 
-            alt="Salon Background" 
+          <img
+            src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=2070&q=80"
+            alt="Salon Background"
             className="w-full h-full object-cover opacity-20"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-transparent"></div>
@@ -51,10 +51,10 @@ export default function Home() {
               <h3 className="text-[#D4AF37] text-sm tracking-[0.3em] uppercase">Our Expertise</h3>
               <h2 className="text-4xl md:text-5xl font-light leading-tight">Artistry in Every <span className="font-serif italic">Detail</span></h2>
               <p className="text-white/60 font-light leading-relaxed">
-                At Yaseen Studio, we believe that your hair is the ultimate expression of your personal brand. 
+                At Yaseen Studio, we believe that your hair is the ultimate expression of your personal brand.
                 With years of dedicated artistry and a keen eye for contemporary trends, we provide more than just a haircut—we deliver a transformation.
               </p>
-              
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 relative">
                 <div className="border-l border-[#D4AF37] pl-6 hover:border-white transition-colors duration-300">
                   <h4 className="text-lg font-medium tracking-wide mb-2 uppercase text-white/90">Precision Cuts</h4>
@@ -74,12 +74,12 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            
+
             <div className="w-full lg:w-1/2 relative group">
               <div className="aspect-[4/5] overflow-hidden rounded-sm relative shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1974&q=80" 
-                  alt="Styling in progress" 
+                <img
+                  src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1974&q=80"
+                  alt="Styling in progress"
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
                 />
               </div>
@@ -98,7 +98,7 @@ export default function Home() {
             <h3 className="text-[#D4AF37] text-sm tracking-[0.3em] uppercase mb-4">The Portfolio</h3>
             <h2 className="text-4xl md:text-5xl font-light">Signature <span className="font-serif italic">Looks</span></h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="group relative aspect-[3/4] overflow-hidden rounded-sm shadow-lg">
               <div className="absolute inset-0 bg-[#D4AF37]/10 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
@@ -115,6 +115,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* Intro/About snippet */}
       <section className="py-24 bg-[#050505] border-t border-white/5 text-center px-6">
@@ -133,7 +134,7 @@ export default function Home() {
       <footer className="py-16 bg-black border-t border-white/5 text-center shadow-[inset_0_20px_50px_rgba(0,0,0,0.5)]">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-2xl font-light tracking-widest uppercase mb-6">
-              Yaseen <span className="text-[#D4AF37] font-medium">Studio</span>
+            Yaseen <span className="text-[#D4AF37] font-medium">Studio</span>
           </div>
           <p className="text-white/30 text-xs font-light uppercase tracking-widest">
             © {new Date().getFullYear()} Yaseen Studio. All rights reserved.
