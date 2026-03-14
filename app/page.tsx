@@ -22,7 +22,7 @@ export default function Home() {
         {/* Abstract dark gradient / image layer */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://images.unsplash.com/photo-1521590832167-7bfcbaa20fc8?q=80&w=2070&auto=format&fit=crop" 
+            src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=2070&q=80" 
             alt="Salon Background" 
             className="w-full h-full object-cover opacity-20"
           />
@@ -78,7 +78,7 @@ export default function Home() {
             <div className="w-full lg:w-1/2 relative group">
               <div className="aspect-[4/5] overflow-hidden rounded-sm relative shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1595476108010-b4d1f10d5e43?q=80&w=1974&auto=format&fit=crop" 
+                  src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1974&q=80" 
                   alt="Styling in progress" 
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
                 />
@@ -106,7 +106,7 @@ export default function Home() {
             </div>
             <div className="group relative aspect-[3/4] overflow-hidden rounded-sm shadow-lg md:mt-12">
               <div className="absolute inset-0 bg-[#D4AF37]/10 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              <img src="https://images.unsplash.com/photo-1599351431202-181cb28a113a?q=80&w=1976&auto=format&fit=crop" alt="Look 2" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
+              <img src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=1976&q=80" alt="Look 2" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
             </div>
             <div className="group relative aspect-[3/4] overflow-hidden rounded-sm shadow-lg">
               <div className="absolute inset-0 bg-[#D4AF37]/10 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
