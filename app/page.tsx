@@ -1,143 +1,239 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { motion, Variants } from "framer-motion";
+import { Scissors, Clock, Droplets, MapPin, Phone, Instagram } from "lucide-react";
 
 export default function Home() {
+  const fadeUp: Variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const fadeRight: Variants = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  const stagger: Variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  };
+
   return (
-    <div className="min-h-screen bg-[#050505] text-[#FAFAFA] font-sans overflow-x-hidden selection:bg-[#D4AF37] selection:text-black">
-      {/* Navbar */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-[#050505]/80 backdrop-blur-md border-b border-white/5 transition-all">
+    <div className="min-h-screen bg-white text-black font-sans overflow-x-hidden selection:bg-black selection:text-white">
+
+      {/* Navigation */}
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-black/10"
+      >
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
-          <div className="text-xl md:text-2xl font-light tracking-widest uppercase">
-            Yaseen <span className="text-[#D4AF37] font-medium">Studio</span>
+          <div className="text-xl md:text-2xl font-light tracking-[0.2em] uppercase">
+            Yaseen <span className="font-serif italic font-normal text-black">Studio</span>
           </div>
-          <div className="hidden md:flex gap-8 text-sm tracking-widest uppercase text-white/70">
-            <a href="#home" className="hover:text-[#D4AF37] transition-colors">Home</a>
-            <a href="#expertise" className="hover:text-[#D4AF37] transition-colors">Expertise</a>
-            <a href="#gallery" className="hover:text-[#D4AF37] transition-colors">Gallery</a>
+          <div className="hidden md:flex gap-10 text-xs tracking-[0.2em] uppercase text-black/70">
+            <a href="#home" className="hover:text-black transition-colors">Home</a>
+            <a href="#services" className="hover:text-black transition-colors">Services</a>
+            <a href="#gallery" className="hover:text-black transition-colors">Gallery</a>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Abstract dark gradient / image layer */}
-        <div className="absolute inset-0 z-0">
+      <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden bg-[#FAFAFA]">
+        <motion.div
+          initial={{ scale: 1.05, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="absolute inset-0 z-0"
+        >
           <img
-            src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=2070&q=80"
-            alt="Salon Background"
-            className="w-full h-full object-cover opacity-20"
+            src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=2070&q=80"
+            alt="Barber Background"
+            className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/50 to-transparent"></div>
-        </div>
+          <div className="absolute inset-0 bg-white/50"></div>
+        </motion.div>
 
-        <div className="relative z-10 text-center px-6 max-w-4xl mx-auto mt-20">
-          <h2 className="text-[#D4AF37] text-xs md:text-sm tracking-[0.3em] font-semibold uppercase mb-6 animate-pulse">Precision & Elegance</h2>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tight mb-8 leading-tight">
-            Elevate Your <br /> <span className="font-serif italic text-white/90">Signature Style</span>
-          </h1>
-          <p className="text-lg md:text-xl text-white/60 font-light max-w-2xl mx-auto mb-10">
-            Masterful hairstyling for those who demand excellence. Experience personalized grooming in an atmosphere of modern luxury.
-          </p>
-          <a href="#expertise" className="inline-block border border-[#D4AF37] text-[#D4AF37] px-8 py-4 uppercase tracking-widest text-sm hover:bg-[#D4AF37] hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(212,175,55,0.1)] hover:shadow-[0_0_25px_rgba(212,175,55,0.4)]">
-            Discover Our Craft
-          </a>
+        <motion.div
+          variants={stagger}
+          initial="hidden"
+          animate="visible"
+          className="relative z-10 text-center px-8 md:px-16 py-16 max-w-4xl mx-auto mt-20 bg-white/70 backdrop-blur-md shadow-2xl rounded-3xl border border-white"
+        >
+          <motion.div variants={fadeUp} className="flex justify-center mb-6">
+            <Scissors className="w-8 h-8 text-black/80" strokeWidth={1} />
+          </motion.div>
+          <motion.h2 variants={fadeUp} className="text-black text-xs md:text-sm tracking-[0.4em] font-light uppercase mb-6">Heritage & Craft</motion.h2>
+          <motion.h1 variants={fadeUp} className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tighter mb-8 leading-[0.9]">
+            THE <span className="font-serif italic block mt-2 text-black">CLASSIC</span> CUT
+          </motion.h1>
+          <motion.p variants={fadeUp} className="text-lg text-black/70 font-light max-w-xl mx-auto mb-12 tracking-wide">
+            Reviving traditional barbering with modern precision. A sanctuary for the modern gentleman.
+          </motion.p>
+          <motion.a
+            variants={fadeUp}
+            href="#services"
+            className="inline-block border border-black text-black px-10 py-4 uppercase tracking-[0.2em] text-xs hover:bg-black hover:text-white transition-all duration-500 bg-transparent"
+          >
+            Explore Services
+          </motion.a>
+        </motion.div>
+      </section>
+
+      {/* Philosophy / Intro */}
+      <section className="py-32 bg-white border-t border-black/5 relative overflow-hidden">
+        <div className="absolute inset-0 z-0 opacity-10" style={{ filter: 'grayscale(50%)' }}>
+          <img
+            src="https://images.unsplash.com/photo-1599581373516-72b1448b11c9?auto=format&fit=crop&w=2070&q=80"
+            alt="Barber Shop Details"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-white via-white/80 to-white"></div>
+        </div>
+        <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "0px" }}
+            variants={stagger}
+          >
+            <motion.h3 variants={fadeUp} className="text-xs tracking-[0.3em] uppercase mb-4 text-black/50">The Standard</motion.h3>
+            <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-light mb-10 leading-tight">
+              "We don't just cut hair.<br /> <span className="font-serif italic text-black/80">We curate your confidence.</span>"
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-black/60 font-light text-lg max-w-2xl mx-auto leading-relaxed">
+              At Yaseen Studio, we embody the timeless traditions of the classic barber shop while injecting a contemporary aesthetic. Our minimalist approach ensures that the focus remains solely on the craft and the client.
+            </motion.p>
+          </motion.div>
         </div>
       </section>
 
-      {/* Expertise Section */}
-      <section id="expertise" className="py-24 md:py-32 bg-[#050505] relative border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="flex flex-col lg:flex-row gap-16 items-center">
-            <div className="w-full lg:w-1/2 space-y-8">
-              <h3 className="text-[#D4AF37] text-sm tracking-[0.3em] uppercase">Our Expertise</h3>
-              <h2 className="text-4xl md:text-5xl font-light leading-tight">Artistry in Every <span className="font-serif italic">Detail</span></h2>
-              <p className="text-white/60 font-light leading-relaxed">
-                At Yaseen Studio, we believe that your hair is the ultimate expression of your personal brand.
-                With years of dedicated artistry and a keen eye for contemporary trends, we provide more than just a haircut—we deliver a transformation.
-              </p>
+      {/* Services Section */}
+      <section id="services" className="py-24 md:py-32 bg-[#FAFAFA] relative overflow-hidden border-t border-black/5">
+        <div className="absolute inset-0 z-0 opacity-10" style={{ filter: 'grayscale(50%)' }}>
+          <img
+            src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=2070&q=80"
+            alt="Barber Station Background"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-white/70"></div>
+        </div>
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+          <div className="flex flex-col lg:flex-row gap-20">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "0px" }}
+              variants={stagger}
+              className="w-full lg:w-1/2"
+            >
+              <motion.h3 variants={fadeRight} className="text-xs tracking-[0.3em] uppercase text-black/50 mb-4">Our Services</motion.h3>
+              <motion.h2 variants={fadeRight} className="text-4xl md:text-6xl font-light mb-12">The <span className="font-serif italic text-black">Menu</span></motion.h2>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-8 relative">
-                <div className="border-l border-[#D4AF37] pl-6 hover:border-white transition-colors duration-300">
-                  <h4 className="text-lg font-medium tracking-wide mb-2 uppercase text-white/90">Precision Cuts</h4>
-                  <p className="text-white/40 text-sm font-light leading-relaxed">Tailored styles that complement your facial structure and lifestyle.</p>
-                </div>
-                <div className="border-l border-[#D4AF37] pl-6 hover:border-white transition-colors duration-300">
-                  <h4 className="text-lg font-medium tracking-wide mb-2 uppercase text-white/90">Color Alchemy</h4>
-                  <p className="text-white/40 text-sm font-light leading-relaxed">Vibrant, multidimensional coloring using industry-leading products.</p>
-                </div>
-                <div className="border-l border-[#D4AF37] pl-6 hover:border-white transition-colors duration-300">
-                  <h4 className="text-lg font-medium tracking-wide mb-2 uppercase text-white/90">Styling</h4>
-                  <p className="text-white/40 text-sm font-light leading-relaxed">Flawless blowouts and elegant styling for your most important occasions.</p>
-                </div>
-                <div className="border-l border-[#D4AF37] pl-6 hover:border-white transition-colors duration-300">
-                  <h4 className="text-lg font-medium tracking-wide mb-2 uppercase text-white/90">Grooming</h4>
-                  <p className="text-white/40 text-sm font-light leading-relaxed">Refined beard trims and classic grooming for the modern gentleman.</p>
-                </div>
+              <div className="space-y-12 pr-0 lg:pr-12">
+                {[
+                  { title: "The Signature Cut", price: "From £35", desc: "Consultation, precision cut, neck shave, styling and finish.", icon: Scissors },
+                  { title: "Hot Towel Shave", price: "From £30", desc: "Traditional cut-throat shave, hot & cold towels, soothing balms.", icon: Droplets },
+                  { title: "Beard Sculpting", price: "From £20", desc: "Detailed beard shaping, lineup, and condition.", icon: Clock },
+                  { title: "The Executive", price: "From £60", desc: "Haircut, hot towel shave, facial treatment and premium styling.", icon: MapPin }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    variants={fadeUp}
+                    className="group border-b border-black/10 pb-8 hover:border-black/40 transition-colors"
+                  >
+                    <div className="flex justify-between items-baseline mb-3">
+                      <h4 className="text-xl font-medium tracking-wide text-black group-hover:pl-2 transition-all duration-300">
+                        {item.title}
+                      </h4>
+                      <span className="text-sm tracking-widest text-black/60">{item.price}</span>
+                    </div>
+                    <p className="text-black/50 font-light leading-relaxed group-hover:pl-2 transition-all duration-300">
+                      {item.desc}
+                    </p>
+                  </motion.div>
+                ))}
               </div>
-            </div>
+            </motion.div>
 
-            <div className="w-full lg:w-1/2 relative group">
-              <div className="aspect-[4/5] overflow-hidden rounded-sm relative shadow-2xl">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "0px" }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              className="w-full lg:w-1/2 relative hidden lg:block"
+            >
+              <div className="aspect-[3/4] overflow-hidden grayscale relative group shadow-2xl">
                 <img
-                  src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1974&q=80"
-                  alt="Styling in progress"
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 grayscale group-hover:grayscale-0 opacity-90 group-hover:opacity-100"
+                  src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?auto=format&fit=crop&w=1974&q=80"
+                  alt="Barber"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
               </div>
-              <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-[#0a0a0a] border border-white/10 p-4 hidden md:flex items-center justify-center shadow-xl backdrop-blur-sm z-10 transition-transform duration-500 group-hover:-translate-y-4">
-                <p className="text-center font-serif italic text-white/80 text-lg">"Perfection is our starting point."</p>
+              {/* Floating Badge */}
+              <div className="absolute -bottom-10 -left-10 bg-black text-white p-8 hidden md:flex flex-col items-center justify-center tracking-widest uppercase shadow-xl z-10 border border-black/10">
+                <span className="text-3xl mb-1 font-serif italic block">Est.</span>
+                <span className="text-sm font-bold">2026</span>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* Gallery Section */}
-      <section id="gallery" className="py-24 md:py-32 bg-[#0a0a0a] border-t border-white/5">
+      <section id="gallery" className="py-24 md:py-32 bg-white border-t border-black/5">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-          <div className="text-center mb-16">
-            <h3 className="text-[#D4AF37] text-sm tracking-[0.3em] uppercase mb-4">The Portfolio</h3>
-            <h2 className="text-4xl md:text-5xl font-light">Signature <span className="font-serif italic">Looks</span></h2>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "0px" }}
+            variants={fadeUp}
+            className="text-center mb-20"
+          >
+            <h3 className="text-xs tracking-[0.3em] uppercase mb-4 text-black/50">The Portfolio</h3>
+            <h2 className="text-4xl md:text-5xl font-light">Precision in <span className="font-serif italic text-black">Focus</span></h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
+            {[
+              "https://images.unsplash.com/photo-1593702275687-f8b402bf1fb5?auto=format&fit=crop&w=1974&q=80",
+              "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=1974&q=80",
+              "https://images.unsplash.com/photo-1605497788044-5a32c7078486?auto=format&fit=crop&w=1974&q=80",
+              "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1974&q=80",
+              "https://images.unsplash.com/photo-1621645582931-d1d3e6564943?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=1974&q=80",
+            ].map((imgUrl, i) => (
+              <div
+                key={i}
+                className={`group relative aspect-[3/4] overflow-hidden ${(i % 3 === 1) ? 'lg:mt-16' : ''}`}
+              >
+                <div className="absolute inset-0 bg-white/10 z-10 transition-colors duration-500 group-hover:bg-transparent pointer-events-none"></div>
+                <img
+                  src={imgUrl}
+                  alt={`Look ${i + 1}`}
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                />
+              </div>
+            ))}
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="group relative aspect-[3/4] overflow-hidden rounded-sm shadow-lg">
-              <div className="absolute inset-0 bg-[#D4AF37]/10 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?q=80&w=1974&auto=format&fit=crop" alt="Look 1" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
-            </div>
-            <div className="group relative aspect-[3/4] overflow-hidden rounded-sm shadow-lg md:mt-12">
-              <div className="absolute inset-0 bg-[#D4AF37]/10 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              <img src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?auto=format&fit=crop&w=1976&q=80" alt="Look 2" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
-            </div>
-            <div className="group relative aspect-[3/4] overflow-hidden rounded-sm shadow-lg">
-              <div className="absolute inset-0 bg-[#D4AF37]/10 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              <img src="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?q=80&w=2070&auto=format&fit=crop" alt="Look 3" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* Intro/About snippet */}
-      <section className="py-24 bg-[#050505] border-t border-white/5 text-center px-6">
-        <div className="max-w-3xl mx-auto">
-          <svg className="w-12 h-12 mx-auto text-[#D4AF37] mb-8 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243zm5.656 5.656a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z" />
-          </svg>
-          <h2 className="text-3xl md:text-4xl font-light mb-6">Yaseen's Philosophy</h2>
-          <p className="text-white/60 font-light text-lg leading-relaxed">
-            "Hairstyling is more than a service, it's a profound form of art. Each client that sits in my chair is treated as an individual masterpiece. We don't just cut hair; we sculpt confidence and craft your most authentic self."
-          </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-16 bg-black border-t border-white/5 text-center shadow-[inset_0_20px_50px_rgba(0,0,0,0.5)]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-2xl font-light tracking-widest uppercase mb-6">
-            Yaseen <span className="text-[#D4AF37] font-medium">Studio</span>
+      <footer className="py-12 bg-[#FAFAFA] border-t border-black/10 text-center">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
+          <div className="text-xl font-light tracking-[0.2em] uppercase mb-8 text-black">
+            Yaseen <span className="font-serif italic text-black/70">Studio</span>
           </div>
-          <p className="text-white/30 text-xs font-light uppercase tracking-widest">
-            © {new Date().getFullYear()} Yaseen Studio. All rights reserved.
+          <div className="flex gap-6 mb-8 text-black/50">
+            <a href="#" className="hover:text-black transition-colors"><Instagram className="w-5 h-5" /></a>
+          </div>
+          <p className="text-black/40 text-xs font-light uppercase tracking-widest">
+            © {new Date().getFullYear()} Yaseen Studio. The Classic Barber.
           </p>
         </div>
       </footer>
