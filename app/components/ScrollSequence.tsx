@@ -8,6 +8,7 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadProgress, setLoadProgress] = useState(0);
 
   const FRAME_COUNT = 100;
 
@@ -25,9 +26,11 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
       img.src = currentFrame(i);
       img.onload = () => {
         loadedCount++;
+        setLoadProgress(Math.floor((loadedCount / FRAME_COUNT) * 100));
         if (loadedCount === FRAME_COUNT) {
           setImages(loadedImages);
-          setImagesLoaded(true);
+          // Small delay to ensure smooth transition from loader to content
+          setTimeout(() => setImagesLoaded(true), 500);
         }
       };
       loadedImages.push(img);
@@ -128,7 +131,23 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
   }, [imagesLoaded, images, frameIndex]);
 
   return (
-    <section id="home" ref={containerRef} className="relative h-[300vh] bg-black border-t border-black/10">
+    <section id="home" ref={containerRef} className="relative h-[350vh] bg-black">
+      {/* Loading Overlay */}
+      {!imagesLoaded && (
+        <div className="fixed inset-0 z-100 bg-black flex flex-col items-center justify-center">
+            <div className="text-white text-xs tracking-[0.4em] uppercase mb-8 font-light">Loading Experience</div>
+            <div className="w-48 h-px bg-white/10 relative overflow-hidden">
+                <motion.div 
+                    className="absolute inset-y-0 left-0 bg-white"
+                    initial={{ width: "0%" }}
+                    animate={{ width: `${loadProgress}%` }}
+                    transition={{ type: "spring", bounce: 0, duration: 0.5 }}
+                />
+            </div>
+            <div className="text-white/40 text-[10px] tracking-widest mt-4 uppercase">{loadProgress}%</div>
+        </div>
+      )}
+
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center pointer-events-none">
         {/* The Canvas for image sequence */}
         <canvas ref={canvasRef} className="absolute inset-0 z-0" />
