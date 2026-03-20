@@ -88,6 +88,11 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
   const textOpacity = useTransform(scrollYProgress, [0.85, 0.95], [0, 1]);
   const textY = useTransform(scrollYProgress, [0.85, 0.95], [50, 0]);
 
+  // Intro animation at the start of the sequence
+  const introOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
+  const introY = useTransform(scrollYProgress, [0, 0.15], [0, -50]);
+  const introScale = useTransform(scrollYProgress, [0, 0.15], [1, 0.95]);
+
   // Initial draw and resize handler
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -152,6 +157,17 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
         {/* The Canvas for image sequence */}
         <canvas ref={canvasRef} className="absolute inset-0 z-0" />
         
+        {/* Intro overlay */}
+        <motion.div 
+          style={{ opacity: introOpacity, y: introY, scale: introScale }}
+          className="absolute inset-0 flex flex-col items-center justify-center z-20 p-6 pointer-events-none"
+        >
+          <h3 className="text-white/50 text-xs tracking-[0.4em] uppercase mb-4">Welcome to</h3>
+          <h1 className="text-4xl md:text-6xl text-white font-light tracking-[0.2em] uppercase">
+              Yaseen's <span className="font-serif italic font-normal text-white">Studio</span>
+          </h1>
+        </motion.div>
+
         {/* Overlay content */}
         {children ? (
           <motion.div 

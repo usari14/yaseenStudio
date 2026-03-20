@@ -26,10 +26,31 @@ export default function Home() {
   };
 
   const { scrollYProgress } = useScroll();
+  
+  // Transition background from black to white just as the sequence ends (approx 30% to 40% of the overall scroll)
   const bgColor = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.4],
-    ["#000000", "#000000", "#ffffff"]
+    [0.2, 0.35],
+    ["#000000", "#ffffff"]
+  );
+
+  // Nav transitions
+  const navBgColor = useTransform(
+    scrollYProgress,
+    [0.2, 0.3],
+    ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 0.9)"]
+  );
+  
+  const navTextColor = useTransform(
+    scrollYProgress,
+    [0.2, 0.3],
+    ["rgba(255, 255, 255, 1)", "rgba(0, 0, 0, 1)"]
+  );
+
+  const navBorderColor = useTransform(
+    scrollYProgress,
+    [0.2, 0.3],
+    ["rgba(255, 255, 255, 0)", "rgba(0, 0, 0, 0.1)"]
   );
 
   const indicatorOpacity = useTransform(scrollYProgress, [0, 0.05], [1, 0]);
@@ -46,16 +67,21 @@ export default function Home() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="fixed top-0 left-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-black/10"
+        style={{ 
+          backgroundColor: navBgColor, 
+          color: navTextColor, 
+          borderBottomColor: navBorderColor 
+        }}
+        className="fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b text-white"
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-12 h-20 flex items-center justify-between">
           <div className="text-xl md:text-2xl font-light tracking-[0.2em] uppercase">
-            Yaseen's <span className="font-serif italic font-normal text-black">Studio</span>
+            Yaseen's <span className="font-serif italic font-normal" style={{ color: "inherit" }}>Studio</span>
           </div>
-          <div className="hidden md:flex gap-10 text-xs tracking-[0.2em] uppercase text-black/70">
-            <a href="#home" className="hover:text-black transition-colors">Home</a>
-            <a href="#services" className="hover:text-black transition-colors">Services</a>
-            <a href="#gallery" className="hover:text-black transition-colors">Gallery</a>
+          <div className="hidden md:flex gap-10 text-xs tracking-[0.2em] uppercase opacity-70">
+            <a href="#home" className="hover:opacity-100 transition-opacity">Home</a>
+            <a href="#services" className="hover:opacity-100 transition-opacity">Services</a>
+            <a href="#gallery" className="hover:opacity-100 transition-opacity">Gallery</a>
           </div>
         </div>
       </motion.nav>
@@ -98,6 +124,9 @@ export default function Home() {
           </div>
         </motion.div>
       </ScrollSequence>
+
+      {/* Atmospheric Soft Bridge Transition */}
+      <div className="h-[50vh] w-full pointer-events-none" />
 
       {/* Philosophy / Intro */}
       <section className="py-32 bg-white border-t border-black/5 relative overflow-hidden">
