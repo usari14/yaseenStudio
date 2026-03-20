@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Yaseen Studio | Premium Hairstylist",
-  description: "Yaseen Studio - Discover the art of premium hairstyling. Your hair, our canvas.",
+  title: "Yaseen's Studio | Premium Hairstylist",
+  description: "Yaseen's Studio - Discover the art of premium hairstyling. Your hair, our canvas.",
 };
 
 export default function RootLayout({
