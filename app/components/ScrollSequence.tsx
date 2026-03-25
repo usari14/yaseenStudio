@@ -1,41 +1,48 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useScroll, useTransform, useMotionValueEvent, motion } from "framer-motion";
 
 export function ScrollSequence({ children }: { children?: React.ReactNode }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [images, setImages] = useState<HTMLImageElement[]>([]);
+  const imagesRef = useRef<Map<number, HTMLImageElement>>(new Map());
+  const loadingRef = useRef<Set<number>>(new Set());
   const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [loadProgress, setLoadProgress] = useState(0);
+  const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
 
   const FRAME_COUNT = 100;
+  const PRELOAD_RANGE = 5; // Load 5 frames ahead and behind current frame
 
   // Path generator based on frame index (1 to 100 -> 001 to 100)
   const currentFrame = (index: number) =>
     `/sequence/${index.toString().padStart(3, "0")}.png`;
 
-  // Preload images
-  useEffect(() => {
-    let loadedCount = 0;
-    const loadedImages: HTMLImageElement[] = [];
-
-    for (let i = 1; i <= FRAME_COUNT; i++) {
-      const img = new Image();
-      img.src = currentFrame(i);
-      img.onload = () => {
-        loadedCount++;
-        setLoadProgress(Math.floor((loadedCount / FRAME_COUNT) * 100));
-        if (loadedCount === FRAME_COUNT) {
-          setImages(loadedImages);
-          // Small delay to ensure smooth transition from loader to content
-          setTimeout(() => setImagesLoaded(true), 500);
-        }
-      };
-      loadedImages.push(img);
+  // Smart lazy loader - only loads images near current scroll position
+  const loadImage = useCallback((frameIndex: number) => {
+    if (imagesRef.current.has(frameIndex) || loadingRef.current.has(frameIndex)) {
+      return; // Already loaded or loading
     }
+
+    loadingRef.current.add(frameIndex);
+    const img = new Image();
+    img.src = currentFrame(frameIndex);
+    img.onload = () => {
+      imagesRef.current.set(frameIndex, img);
+      loadingRef.current.delete(frameIndex);
+    };
+    img.onerror = () => {
+      loadingRef.current.delete(frameIndex);
+    };
   }, []);
+
+  // Preload initial frames to start ASAP
+  useEffect(() => {
+    for (let i = 0; i < Math.min(5, FRAME_COUNT); i++) {
+      loadImage(i);
+    }
+    setImagesLoaded(true);
+  }, [loadImage]);
 
   // Framer motion scroll tracking
   const { scrollYProgress } = useScroll({
@@ -48,40 +55,47 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
 
   // Update canvas on scroll
   useMotionValueEvent(frameIndex, "change", (latestFrame) => {
-    if (!imagesLoaded || !canvasRef.current) return;
+    if (!canvasRef.current) return;
+
+    const frameInt = Math.floor(latestFrame);
+    setCurrentFrameIndex(frameInt);
+
+    // Smart preload: load frames around current position
+    for (let i = Math.max(0, frameInt - PRELOAD_RANGE); i <= Math.min(FRAME_COUNT - 1, frameInt + PRELOAD_RANGE); i++) {
+      loadImage(i);
+    }
+
+    // Draw the image if available
+    const img = imagesRef.current.get(frameInt);
+    if (!img) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const frameInt = Math.floor(latestFrame);
-    const img = images[frameInt];
+    // Clear and draw image matching canvas size
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Calculate aspect ratio fit (cover)
+    const canvasRatio = canvas.width / canvas.height;
+    const imgRatio = img.width / img.height;
 
-    if (img) {
-      // Clear and draw image matching canvas size
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      // Calculate aspect ratio fit (cover)
-      const canvasRatio = canvas.width / canvas.height;
-      const imgRatio = img.width / img.height;
+    let drawWidth = canvas.width;
+    let drawHeight = canvas.height;
+    let offsetX = 0;
+    let offsetY = 0;
 
-      let drawWidth = canvas.width;
-      let drawHeight = canvas.height;
-      let offsetX = 0;
-      let offsetY = 0;
-
-      if (canvasRatio > imgRatio) {
-        // Canvas is wider than image
-        drawHeight = canvas.width / imgRatio;
-        offsetY = (canvas.height - drawHeight) / 2;
-      } else {
-        // Canvas is taller than image
-        drawWidth = canvas.height * imgRatio;
-        offsetX = (canvas.width - drawWidth) / 2;
-      }
-
-      ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+    if (canvasRatio > imgRatio) {
+      // Canvas is wider than image
+      drawHeight = canvas.width / imgRatio;
+      offsetY = (canvas.height - drawHeight) / 2;
+    } else {
+      // Canvas is taller than image
+      drawWidth = canvas.height * imgRatio;
+      offsetX = (canvas.width - drawWidth) / 2;
     }
+
+    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
   });
 
   // Animate text overlay at the end of the sequence
@@ -98,13 +112,13 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext("2d");
 
-    if (imagesLoaded && canvas && ctx && images.length > 0) {
+    if (imagesLoaded && canvas && ctx) {
       const updateCanvasSize = () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         
-        // Trigger initial draw
-        const img = images[Math.floor(frameIndex.get())];
+        // Trigger initial draw with current frame
+        const img = imagesRef.current.get(currentFrameIndex);
         if (img) {
            const canvasRatio = canvas.width / canvas.height;
            const imgRatio = img.width / img.height;
@@ -133,26 +147,10 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
         window.removeEventListener("resize", updateCanvasSize);
       };
     }
-  }, [imagesLoaded, images, frameIndex]);
+  }, [imagesLoaded, currentFrameIndex]);
 
   return (
     <section id="home" ref={containerRef} className="relative h-[350vh] bg-black">
-      {/* Loading Overlay */}
-      {!imagesLoaded && (
-        <div className="fixed inset-0 z-100 bg-black flex flex-col items-center justify-center">
-            <div className="text-white text-xs tracking-[0.4em] uppercase mb-8 font-light">Loading Experience</div>
-            <div className="w-48 h-px bg-white/10 relative overflow-hidden">
-                <motion.div 
-                    className="absolute inset-y-0 left-0 bg-white"
-                    initial={{ width: "0%" }}
-                    animate={{ width: `${loadProgress}%` }}
-                    transition={{ type: "spring", bounce: 0, duration: 0.5 }}
-                />
-            </div>
-            <div className="text-white/40 text-[10px] tracking-widest mt-4 uppercase">{loadProgress}%</div>
-        </div>
-      )}
-
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center pointer-events-none">
         {/* The Canvas for image sequence */}
         <canvas ref={canvasRef} className="absolute inset-0 z-0" />
