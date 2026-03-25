@@ -3,7 +3,12 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { useScroll, useTransform, useMotionValueEvent, motion } from "framer-motion";
 
-export function ScrollSequence({ children }: { children?: React.ReactNode }) {
+interface ScrollSequenceProps {
+  children?: React.ReactNode;
+  frameCount?: number; // 25 (25%), 50 (50%), or 100 (100%) - defaults to 100
+}
+
+export function ScrollSequence({ children, frameCount = 50 }: ScrollSequenceProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const imagesRef = useRef<Map<number, HTMLImageElement>>(new Map());
@@ -11,12 +16,13 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
 
-  const FRAME_COUNT = 100;
-  const PRELOAD_RANGE = 5; // Load 5 frames ahead and behind current frame
+  const FRAME_COUNT = frameCount;
+  const PRELOAD_RANGE = Math.ceil(5 * (100 / frameCount)); // Adaptive preload range
+  const FRAME_STEP = Math.max(1, Math.floor(100 / frameCount)); // How many frames to skip (for 50: 2, for 25: 4)
 
-  // Path generator based on frame index (1 to 100 -> 001 to 100)
+  // Path generator - maps display frame to actual file frame
   const currentFrame = (index: number) =>
-    `/sequence/${index.toString().padStart(3, "0")}.png`;
+    `/sequence/${(index * FRAME_STEP).toString().padStart(3, "0")}.png`;
 
   // Smart lazy loader - only loads images near current scroll position
   const loadImage = useCallback((frameIndex: number) => {
@@ -150,7 +156,7 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
   }, [imagesLoaded, currentFrameIndex]);
 
   return (
-    <section id="home" ref={containerRef} className="relative h-[350vh] bg-black">
+    <section id="home" ref={containerRef} className="relative h-[250vh] sm:h-[300vh] md:h-[350vh] bg-black">
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center pointer-events-none">
         {/* The Canvas for image sequence */}
         <canvas ref={canvasRef} className="absolute inset-0 z-0" />
@@ -158,10 +164,10 @@ export function ScrollSequence({ children }: { children?: React.ReactNode }) {
         {/* Intro overlay */}
         <motion.div 
           style={{ opacity: introOpacity, y: introY, scale: introScale }}
-          className="absolute inset-0 flex flex-col items-center justify-center z-20 p-6 pointer-events-none"
+          className="absolute inset-0 flex flex-col items-center justify-center z-20 p-4 sm:p-6 pointer-events-none"
         >
-          <h3 className="text-white/50 text-xs tracking-[0.4em] uppercase mb-4">Welcome to</h3>
-          <h1 className="text-4xl md:text-6xl text-white font-light tracking-[0.2em] uppercase">
+          <h3 className="text-white/50 text-[10px] sm:text-xs tracking-[0.4em] uppercase mb-2 sm:mb-4">Welcome to</h3>
+          <h1 className="text-2xl sm:text-4xl md:text-6xl text-white font-light tracking-[0.2em] uppercase">
               Yaseen's <span className="font-serif italic font-normal text-white">Studio</span>
           </h1>
         </motion.div>
