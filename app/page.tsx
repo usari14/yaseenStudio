@@ -8,6 +8,8 @@ import { Scissors, Clock, Droplets, MapPin, Instagram } from "lucide-react";
 import { Hero } from "./components/Hero";
 import { SmoothScroll } from "./components/SmoothScroll";
 
+import { FeaturedClients } from "./components/FeaturedClients";
+
 export default function Home() {
   const fadeUp: Variants = {
     hidden: { opacity: 0, y: 50 },
@@ -181,7 +183,10 @@ export default function Home() {
               </motion.div>
             </div>
           </div>
-        </section>
+      </section>
+
+        {/* Featured Clients */}
+        <FeaturedClients />
 
         {/* Gallery Section */}
         <section id="gallery" className="py-16 sm:py-24 md:py-32 bg-white border-t border-black/5">
