@@ -9,6 +9,7 @@ import { Hero } from "./components/Hero";
 import { SmoothScroll } from "./components/SmoothScroll";
 
 import { FeaturedClients } from "./components/FeaturedClients";
+import { Location } from "./components/Location";
 
 export default function Home() {
   const fadeUp: Variants = {
@@ -226,6 +227,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Location Section */}
+        <Location />
 
         {/* Footer */}
         <footer className="py-8 sm:py-12 bg-[#FAFAFA] border-t border-black/10 text-center">
