@@ -136,9 +136,6 @@ export function Hero() {
   const subY = useTransform(smoothProgress, [0, 1], [0, -80]);
   const ctaY = useTransform(smoothProgress, [0, 1], [0, -40]);
 
-  /* scroll indicator */
-  const indicatorOpacity = useTransform(scrollYProgress, [0, 0.08], [1, 0]);
-
   /* stagger variants */
   const container: Variants = {
     hidden: {},
@@ -256,27 +253,6 @@ export function Hero() {
             Explore Services
           </motion.a>
         </motion.div>
-      </motion.div>
-
-      {/* ── Scroll indicator ── */}
-      <motion.div
-        style={{ opacity: indicatorOpacity }}
-        className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3"
-      >
-        <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.5em] text-white/25 font-light">
-          Scroll
-        </span>
-        <div className="w-px h-10 sm:h-14 bg-linear-to-b from-white/20 to-transparent relative overflow-hidden">
-          <motion.div
-            className="absolute top-0 left-0 w-full bg-white/60 h-3"
-            animate={{ y: [0, 56, 0] }}
-            transition={{
-              duration: 2.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        </div>
       </motion.div>
 
       {/* ── Bottom gradient fade ── */}
